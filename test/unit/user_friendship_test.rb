@@ -14,4 +14,14 @@ class UserFriendshipTest < ActiveSupport::TestCase
     UserFriendship.create user_id: users(:doug).id, friend_id: users(:mike).id
     assert users(:doug).friends.include?(users(:mike))
   end
+
+  context "a new instance" do
+    setup do
+      @user_friendship = UserFriendship.new user: users(:doug), friend: users(:mike)
+    end
+
+    should "have a pending state" do
+      assert_equal 'pending', @user_friendship.state
+    end
+  end
 end
