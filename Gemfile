@@ -8,9 +8,12 @@ gem 'rails', '3.2.13'
 gem 'devise'
 gem 'simple_form'
 gem 'state_machine'
+gem 'draper'
+gem 'js-routes'
 
 group :test do
   gem 'shoulda'
+  gem 'factory_girl_rails'
 end
 
 group :development, :test do
