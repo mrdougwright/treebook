@@ -3,7 +3,7 @@ class UserFriendshipsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @user_friendships = current_user.user_friendships.all
+    @user_friendships = UserFriendshipDecorator.decorate_collection(friendship_association.all)
     respond_with @user_friendships
   end
 
@@ -60,11 +60,31 @@ class UserFriendshipsController < ApplicationController
     @user_friendship = current_user.user_friendships.where(friend_id: @friend.id).first.decorate
   end
 
+  def block
+    @user_friendship = current_user.user_friendships.find(params[:id])
+    if @user_friendship.block!
+      flash[:success] = "You have blocked #{@user_friendship.friend.first_name}."
+    else
+      flash[:error] = "That friendship could not be blocked."
+    end
+    redirect_to user_friendships_path
+  end
+
   def destroy
     @user_friendship = current_user.user_friendships.find(params[:id])
     if @user_friendship.destroy
       flash[:success] = "Friendship destroyed."
     end
     redirect_to user_friendship_path
+  end
+
+  private 
+  def friendship_association
+    case params[:list]
+    when nil
+      current_user.user_friendships
+    when 'blocked'
+      current_user.blocked_user_friendships
+    end
   end
 end
