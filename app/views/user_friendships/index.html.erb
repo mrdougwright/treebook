@@ -12,7 +12,6 @@
 
 <% @user_friendships.each do |friendship| %>
   <% friend = friendship.friend %>
-  <% unless friend.nil? %>
   <div id="<%= dom_id(friendship) %>" class="friend row">
     <div class="span1">
       <%= link_to image_tag(friend.gravatar_url), profile_path(friend) %>
@@ -30,5 +29,4 @@
         <% end %>
     </div>
   </div>
-  <% end %>
 <% end %>
